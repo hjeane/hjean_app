@@ -1,0 +1,13 @@
+# pysqlite3-binary
+pysqlite3
+python-dotenv
+langchain
+chromadb
+unstructured
+sentence-transformers
+faiss-cpu
+tiktoken
+openai
+pypdf
+loguru
+docx2txt

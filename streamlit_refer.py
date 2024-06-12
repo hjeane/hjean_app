@@ -25,7 +25,7 @@ def main():
     page_icon=":books:")
 
     st.title(":red[:books: LISTBOT] 에게 질문하세요	:heavy_exclamation_mark:")
-    st.caption("	:pencil: Hello, Welcome to Library and Information Science Q&A chat! This app is developed for Introduction to Data Science course project Spring 2024")
+    st.caption("	:pencil: Hello, Welcome to Library and Information Science Q&A chat. This app is developed for Introduction to Data Science course project Spring 2024. Ask AI Librarian LISBOT Now!")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None

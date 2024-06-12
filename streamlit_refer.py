@@ -26,7 +26,7 @@ def main():
 
     st.title("LISTBOT에게 질문하세요! :green[ Q&A Chat ] :books:")
     st.caption(":pencil2: A Library and Information Science chatbot powered by OpenAI")
-    st.image("C:\Users\LG\Downloads\중앙대학교 도서관.png", use_column_width=True)
+    st.image("C:/Users/LG/Downloads/중앙대학교 도서관.png", use_column_width=True)
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None

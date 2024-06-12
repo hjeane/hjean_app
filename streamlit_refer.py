@@ -27,7 +27,7 @@ def main():
     st.title(" :red[:books: LISBOT] 에게 물어보세요	:grey_exclamation:")
     st.caption("    :closed_book: Hello, welcome to the Library and Information Science Q&A chat. ")
     st.caption("    :closed_book: This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
-    st.caption("    	:woman-gesturing-ok: **반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요.**")
+    st.caption("    	:woman-gesturing-ok: **반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요.     	:man-gesturing-ok**")
     st.caption("    	:pencil2: 	**LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다. 자료를 업로드하고 궁금한 점을 물어보세요**     :speech_balloon:")
     
     if "conversation" not in st.session_state:

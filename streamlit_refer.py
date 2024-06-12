@@ -24,7 +24,7 @@ def main():
     page_title="DirChat",
     page_icon=":books:")
 
-    st.title("LISTBOT에게 질문하세요! :green[ Q&A Chat ] :books:")
+    st.title(":books:LISTBOT에게 질문하세요! :red[Q&A Chat] ")
     st.caption(":pencil2: A Library and Information Science chatbot powered by OpenAI")
     st.image("C:/Users/LG/Downloads/중앙대학교 도서관.png", use_column_width=True)
 

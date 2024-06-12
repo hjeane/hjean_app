@@ -24,8 +24,8 @@ def main():
     page_title="Library and Information Science OpenChat developed for Introduction to Data Science Spring 2024 team project",
     page_icon=":books:")
 
-    st.title(":open_book: LISTBOT에게 질문하세요	:heavy_exclamation_mark:  ")
-    st.subtitle(':blue[Library and Information Science Q&A Chat]')
+    st.title(":books: LISTBOT에게 질문하세요	:heavy_exclamation_mark:  ")
+    st.subheader(':blue[Library and Information Science Q&A Chat]')
     st.caption(":pencil2: powered by OpenAI developed for Introduction to Data Science ")
     
     if "conversation" not in st.session_state:

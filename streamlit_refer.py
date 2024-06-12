@@ -21,11 +21,11 @@ from langchain.memory import StreamlitChatMessageHistory
 
 def main():
     st.set_page_config(
-    page_title="Library and Information Science OpenChat developed for Introduction to Data Science Spring 2024 team project",
+    page_title="Library and Information Science OpenChat",
     page_icon=":books:")
 
     st.title(":red[:books: LISTBOT] 에게 질문하세요	:heavy_exclamation_mark:")
-    st.caption("	:pencil: Hello, Welcome to Library and Information Science Q&A chat. This app is developed for Introduction to Data Science course project Spring 2024. Ask AI Librarian LISBOT Now!")
+    st.caption("	:pencil: "Hello, welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University. Feel free to ask any questions to our AI Librarian, LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None

@@ -40,7 +40,7 @@ def main():
     with st.sidebar:
         uploaded_files =  st.file_uploader("여기에 파일을 업로드하세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-        process = st.button("입력")
+        process = st.button("Process")
     if process:
         if not openai_api_key:
             st.info("OpenAI API key를 다시 입력하세요.")
@@ -55,7 +55,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": "안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. :speech_balloon: 첨부한 자료를 기반으로 답변을 제공해 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요."}]
+                                        "content": "안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. 첨부한 자료를 기반으로 답변을 제공해 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요. :speech_balloon: "}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])

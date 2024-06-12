@@ -26,8 +26,8 @@ def main():
 
     st.title(":books: LISTBOT에게 질문하세요	:heavy_exclamation_mark:  ")
     st.subheader(':red[Library and Information Science Q&A Chat]')
-    st.caption(":pencil2: powered by OpenAI 
-    developed for Introduction to Data Science course project Spring 2024")
+    st.caption(":pencil2: powered by OpenAI")
+    st.caption("developed for Introduction to Data Science course project Spring 2024")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None

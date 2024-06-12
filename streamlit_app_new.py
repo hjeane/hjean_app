@@ -51,9 +51,22 @@ def main():
             st.stop()
 
         files_text = get_text(uploaded_files)
+        if not files_text:
+            st.error("파일에서 텍스트를 추출하지 못했습니다.")
+            return
+
         text_chunks = get_text_chunks(files_text)
+        if not text_chunks:
+            st.error("텍스트 청크를 생성하지 못했습니다.")
+            return
+        
+        st.write(f"text_chunks 길이: {len(text_chunks)}")
+        
         vectorstore = get_vectorstore(text_chunks)
-     
+        if not vectorstore:
+            st.error("벡터 스토어를 생성하지 못했습니다.")
+            return
+
         st.session_state.conversation = get_conversation_chain(vectorstore, openai_api_key)
         st.session_state.processComplete = True
 
@@ -134,6 +147,16 @@ def get_vectorstore(text_chunks):
         model_kwargs={'device': 'cpu'},
         encode_kwargs={'normalize_embeddings': True}
     )
+    
+    # 디버깅: text_chunks 출력
+    st.write(f"text_chunks: {text_chunks}")
+
+    embeddings_list = embeddings.embed_documents([chunk.page_content for chunk in text_chunks])
+    st.write(f"embeddings 길이: {len(embeddings_list)}")
+
+    if not embeddings_list:
+        return None
+
     vectorstore = FAISS.from_documents(text_chunks, embeddings)
     return vectorstore
 
@@ -152,3 +175,4 @@ def get_conversation_chain(vectorstore, openai_api_key):
 
 if __name__ == '__main__':
     main()
+

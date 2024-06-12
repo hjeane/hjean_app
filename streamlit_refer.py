@@ -42,11 +42,11 @@ def main():
         uploaded_files =  st.file_uploader("여기에 파일을 업로드하세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
+        
     if process:
         if not uploaded_files:
-        st.info("먼저 파일을 업로드하세요.")
-        st.stop()
-        
+            st.info("먼저 파일을 업로드하세요.")
+            st.stop()
         if not openai_api_key:
             st.info("OpenAI API key를 다시 입력하세요.")
             st.stop()

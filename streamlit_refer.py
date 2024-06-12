@@ -27,7 +27,7 @@ def main():
     st.title(" :red[:books: LISTBOT] 에게 물어보세요	:grey_exclamation:")
     st.caption("    :closed_book: Hello, welcome to the Library and Information Science Q&A chat. ")
     st.caption("    :closed_book: This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
-    st.caption("    :man-raising-hand: 반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요. LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다.")
+    st.caption("    :man-raising-hand: 반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요. LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다. 자료를 업로드하고 궁금한 점을 물어보세요     :speech_balloon:")
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
 
@@ -55,7 +55,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": "안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요     :speech_balloon:  "}]
+                                        "content": "안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. 무엇을 도와드릴까요?"}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])

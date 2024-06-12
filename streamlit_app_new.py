@@ -30,6 +30,7 @@ def main():
     st.title(" :red[:books: LISTBOT] 에게 물어보세요 :grey_exclamation:")
     st.caption(" :closed_book: Hello, welcome to the Library and Information Science Q&A chat. ")
     st.caption(" :closed_book: This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
+    st.caption(" 	:man-raising-hand: 반드시 파일을 먼저 첨부한 뒤 OPEN_API KEY를 입력해주세요!")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None

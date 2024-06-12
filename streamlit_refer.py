@@ -25,8 +25,9 @@ def main():
     page_icon=":books:")
 
     st.title(":books: LISTBOT에게 질문하세요	:heavy_exclamation_mark:  ")
-    st.subheader(':blue[Library and Information Science Q&A Chat]')
-    st.caption(":pencil2: powered by OpenAI developed for Introduction to Data Science ")
+    st.subheader(':red[Library and Information Science Q&A Chat]')
+    st.caption(":pencil2: powered by OpenAI 
+    developed for Introduction to Data Science course project Spring 2024")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -55,7 +56,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": ":speech_balloon: 안녕하세요 저는 당신을 도와드릴 AI 사서 LISBOT입니다. 좌측 메뉴 바에 문헌정보학 관련 자료를 업로드하면, 해당 자료를 기반으로 답변을 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요. 최선을 다해 도와드리겠습니다! "}]
+                                        "content": ":speech_balloon: 안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. 좌측 메뉴에서 관련 자료를 업로드하면, 해당 자료를 기반으로 답변을 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요."}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])

@@ -25,9 +25,9 @@ def main():
     page_icon=":books:")
 
     st.title(":red[:books: LISTBOT] 에게 질문하세요	:heavy_exclamation_mark:")
-    st.caption(":black_nib:Hello, welcome to the Library and Information Science Q&A chat. ")
-    st.caption(":black_nib:This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University.")
-    st.caption(":black_nib:Feel free to ask any questions to our AI Librarian, LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
+    st.caption("    :book: Hello, welcome to the Library and Information Science Q&A chat. ")
+    st.caption("    :book: This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University.")
+    st.caption("    :book: Feel free to ask any questions to our AI Librarian, LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None

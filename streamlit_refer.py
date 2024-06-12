@@ -24,8 +24,9 @@ def main():
     page_title="DirChat",
     page_icon=":books:")
 
-    st.title("문정에게 물어봐:red[QA Chat]_ :books:")
+    st.title("LISTBOT에게 질문하세요! :green[ Q&A Chat ] :books:")
     st.caption(":pencil2: A Library and Information Science chatbot powered by OpenAI")
+    st.image("C:\Users\LG\Downloads\중앙대학교 도서관.png", use_column_width=True)
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -37,12 +38,12 @@ def main():
         st.session_state.processComplete = None
 
     with st.sidebar:
-        uploaded_files =  st.file_uploader("Upload your file",type=['pdf','docx'],accept_multiple_files=True)
+        uploaded_files =  st.file_uploader("파일을 업로드하세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
     if process:
         if not openai_api_key:
-            st.info("Please add your OpenAI API key to continue.")
+            st.info("OpenAI API key를 다시 입력하세요.")
             st.stop()
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
@@ -54,8 +55,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": ":speech_balloon: 안녕하세요! 저의 이름은 AI 사서 챗봇 LISBOT이에요! 문헌정보학에 관해 궁금하신 것이 있으면 언제든 물어봐주세요!"}]
-
+                                        "content": ":speech_balloon: 안녕하세요? 저는 중앙대학교 문헌정보학과 데이터사이언스개론 팀 프로젝트으로 개발된 AI 사서 LISBOT입니다. 좌측 메뉴 바에 문헌정보학 관련 자료를 업로드하시면, 해당 자료를 기반으로 질문에 답변을 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요. 최선을 다해 도와드리겠습니다! "}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -63,7 +63,7 @@ def main():
     history = StreamlitChatMessageHistory(key="chat_messages")
 
     # Chat logic
-    if query := st.chat_input("무엇을 도와드릴까요? 질문을 입력해주세요!"):
+    if query := st.chat_input("여기에 질문을 입력하세요."):
         st.session_state.messages.append({"role": "user", "content": query})
 
         with st.chat_message("user"):

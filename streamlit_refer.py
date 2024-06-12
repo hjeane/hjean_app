@@ -55,7 +55,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": ":speech_balloon: 안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. 좌측에 파일을 첨부하면 해당 자료를 기반으로 답변을 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요."}]
+                                        "content": "안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. :speech_balloon: 첨부한 자료를 기반으로 답변을 제공해 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요."}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])

@@ -24,7 +24,7 @@ def main():
     page_title="Library and Information Science OpenChat developed for Introduction to Data Science Spring 2024 team project",
     page_icon=":books:")
 
-    st.title(":books: LISTBOT에게 질문하세요	:heavy_exclamation_mark:___ :red[**LIS Q&A Chat**] ")
+    st.title(":books: LISTBOT에게 질문하세요	:heavy_exclamation_mark: :red[**LIS Q&A Chat**] ")
     st.caption("	:pushpin: developed for Introduction to Data Science course project Spring 2024")
     st.caption("	:pushpin: powered by OpenAI")
     

@@ -24,7 +24,7 @@ def main():
     page_title="Library and Information Science OpenChat",
     page_icon=":books:")
 
-    st.title(":red[:books: LISTBOT] 에게 질문하세요	:grey_exclamation:")
+    st.title("궁금한 것을 :red[:books: LISTBOT] 에게 질문하세요	:grey_exclamation:")
     st.caption("    :closed_book: Hello, welcome to the Library and Information Science Q&A chat. ")
     st.caption("    :closed_book: This app is developed for the Introduction to Data Science course project for Spring 2024 at Chung-ang University. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.")
     

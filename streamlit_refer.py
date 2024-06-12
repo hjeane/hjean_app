@@ -56,7 +56,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": "안녕하세요 저는 문헌정보학 전문 AI 사서 LISBOT입니다. 무엇을 도와드릴까요?"}]
+                                        "content": "안녕하세요 저는 문헌정보학 전문 인공지능 사서 LISBOT입니다. 무엇을 도와드릴까요?"}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])

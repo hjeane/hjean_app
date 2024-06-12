@@ -43,15 +43,19 @@ def main():
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
     if process:
+        if not uploaded_files:
+        st.info("먼저 파일을 업로드하세요.")
+        st.stop()
+        
         if not openai_api_key:
             st.info("OpenAI API key를 다시 입력하세요.")
             st.stop()
+
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
         vetorestore = get_vectorstore(text_chunks)
      
         st.session_state.conversation = get_conversation_chain(vetorestore,openai_api_key) 
-
         st.session_state.processComplete = True
 
     if 'messages' not in st.session_state:

@@ -21,11 +21,11 @@ from langchain.memory import StreamlitChatMessageHistory
 
 def main():
     st.set_page_config(
-    page_title="DirChat",
+    page_title="Library and Information Science OpenChat developed for Introduction to Data Science Spring 2024 team project",
     page_icon=":books:")
 
-    st.title(":books:LISTBOT에게 질문하세요! :red[Q&A Chat] ")
-    st.caption(":pencil2: A Library and Information Science chatbot powered by OpenAI")
+    st.title("LISTBOT	:books:에게 질문하세요	:heavy_exclamation_mark::red[Q&A Chat] ")
+    st.caption(":pencil2: A Library and Information Science chatbot powered by OpenAI developed for Introduction to Data Science ")
     
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -37,9 +37,9 @@ def main():
         st.session_state.processComplete = None
 
     with st.sidebar:
-        uploaded_files =  st.file_uploader("파일을 업로드하세요.",type=['pdf','docx'],accept_multiple_files=True)
+        uploaded_files =  st.file_uploader("여기에 파일을 업로드하세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-        process = st.button("Process")
+        process = st.button("입력")
     if process:
         if not openai_api_key:
             st.info("OpenAI API key를 다시 입력하세요.")
@@ -54,7 +54,7 @@ def main():
 
     if 'messages' not in st.session_state:
         st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": ":speech_balloon: 안녕하세요? 저는 중앙대학교 문헌정보학과 데이터사이언스개론 팀 프로젝트으로 개발된 AI 사서 LISBOT입니다. 좌측 메뉴 바에 문헌정보학 관련 자료를 업로드하시면, 해당 자료를 기반으로 질문에 답변을 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요. 최선을 다해 도와드리겠습니다! "}]
+                                        "content": ":speech_balloon: 안녕하세요 저는 당신을 도와드릴 AI 사서 LISBOT입니다. 좌측 메뉴 바에 문헌정보학 관련 자료를 업로드하면, 해당 자료를 기반으로 답변을 드립니다. 자료를 업로드하고 궁금한 점을 저에게 물어보세요. 최선을 다해 도와드리겠습니다! "}]
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -149,7 +149,6 @@ def get_conversation_chain(vetorestore,openai_api_key):
         )
 
     return conversation_chain
-
 
 
 if __name__ == '__main__':

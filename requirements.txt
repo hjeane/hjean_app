@@ -10,5 +10,5 @@ openai
 pypdf
 loguru
 docx2txt
-streamlit==1.4.0
+streamlit
 langchain-community

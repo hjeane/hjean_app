@@ -15,14 +15,15 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.vectorstores import FAISS
 
+# from streamlit_chat import message
 from langchain.callbacks import get_openai_callback
 from langchain.memory import StreamlitChatMessageHistory
 
 def main():
-    st.set_page_config(
-        page_title="Library and Information Science OpenChat",
-        page_icon=":books:"
-    )
+    # st.set_page_config(
+    #     page_title="Library and Information Science OpenChat",
+    #     page_icon=":books:"
+    # )
 
     st.title("📚 LISBOT에게 물어보세요 ❕")
     st.caption("📢 *Welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.*")
@@ -227,12 +228,5 @@ def get_conversation_chain(vetorestore, openai_api_key):
         return_source_documents=True,
         verbose=True
     )
-    return conversation_chain
-
-if __name__ == '__main__':
-    main()
-
-if __name__ == '__main__':
-    main()
-
+    return
 

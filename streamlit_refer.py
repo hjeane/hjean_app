@@ -21,13 +21,14 @@ from langchain.memory import StreamlitChatMessageHistory
 def main():
     st.set_page_config(
         page_title="Library and Information Science OpenChat",
-        page_icon=":books:")
+        page_icon=":books:"
+    )
 
-    st.title(" :red[ :books: LISBOT] 에게 물어보세요	:grey_exclamation:")
-    st.caption("        :loudspeaker: *Welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024.Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.*")
-    st.caption("    	:heavy_check_mark: **반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요**	:black_nib:")
-    st.caption("    	:heavy_check_mark: 	**LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다. 자료를 업로드하고 궁금한 점을 물어보세요**     :speech_balloon:")
-    
+    st.title("📚 LISBOT에게 물어보세요 ❕")
+    st.caption("📢 *Welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.*")
+    st.caption("✔️ **반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요** 🖋️")
+    st.caption("✔️ **LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다. 자료를 업로드하고 궁금한 점을 물어보세요** 💬")
+
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
 
@@ -41,7 +42,7 @@ def main():
         uploaded_files = st.file_uploader("여기에 파일을 업로드하세요.", type=['pdf','docx'], accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
-        
+
     if process:
         if not uploaded_files:
             st.info("먼저 파일을 업로드하세요.")
@@ -49,27 +50,30 @@ def main():
         if not openai_api_key:
             st.info("OpenAI API key를 다시 입력하세요.")
             st.stop()
-        
+
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
         vetorestore = get_vectorstore(text_chunks)
-     
-        st.session_state.conversation = get_conversation_chain(vetorestore, openai_api_key) 
+
+        st.session_state.conversation = get_conversation_chain(vetorestore, openai_api_key)
         st.session_state.processComplete = True
 
     if 'messages' not in st.session_state:
-        st.session_state['messages'] = [{"role": "assistant", 
+        st.session_state['messages'] = [{"role": "assistant",
                                          "content": "안녕하세요 저는 ai 사서 LISBOT입니다. 궁금한 것이 있나요?"}]
+
+    # Display chat messages
     for message in st.session_state.messages:
-        st.write(f"{message['role']}: {message['content']}")
+        if message["role"] == "assistant":
+            st.markdown(f"<div style='background-color: #f0f2f6; padding: 10px; border-radius: 10px;'>{message['content']}</div>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>{message['content']}</div>", unsafe_allow_html=True)
 
-    history = StreamlitChatMessageHistory(key="chat_messages")
-
-    # Chat logic
-    if query := st.text_input("여기에 질문을 입력하세요."):
+    # Chat input
+    query = st.text_input("여기에 질문을 입력하세요.")
+    if query:
         st.session_state.messages.append({"role": "user", "content": query})
-
-        st.write(f"user: {query}")
+        st.markdown(f"<div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>{query}</div>", unsafe_allow_html=True)
 
         chain = st.session_state.conversation
 
@@ -80,7 +84,7 @@ def main():
             response = result['answer']
             source_documents = result['source_documents']
 
-            st.write(f"assistant: {response}")
+            st.markdown(f"<div style='background-color: #f0f2f6; padding: 10px; border-radius: 10px;'>{response}</div>", unsafe_allow_html=True)
             with st.expander("참고 문서 확인"):
                 st.markdown(source_documents[0].metadata['source'], help=source_documents[0].page_content)
                 st.markdown(source_documents[1].metadata['source'], help=source_documents[1].page_content)
@@ -96,7 +100,7 @@ def tiktoken_len(text):
 
 def get_text(docs):
     doc_list = []
-    
+
     for doc in docs:
         file_name = doc.name  # doc 객체의 이름을 파일 이름으로 사용
         with open(file_name, "wb") as file:  # 파일을 doc.name으로 저장
@@ -129,16 +133,16 @@ def get_vectorstore(text_chunks):
         model_name="jhgan/ko-sroberta-multitask",
         model_kwargs={'device': 'cpu'},
         encode_kwargs={'normalize_embeddings': True}
-    )  
+    )
     vectordb = FAISS.from_documents(text_chunks, embeddings)
     return vectordb
 
 def get_conversation_chain(vetorestore, openai_api_key):
     llm = ChatOpenAI(openai_api_key=openai_api_key, model_name='gpt-4', temperature=0)
     conversation_chain = ConversationalRetrievalChain.from_llm(
-        llm=llm, 
-        chain_type="stuff", 
-        retriever=vetorestore.as_retriever(search_type='mmr', verbose=True), 
+        llm=llm,
+        chain_type="stuff",
+        retriever=vetorestore.as_retriever(search_type='mmr', verbose=True),
         memory=ConversationBufferMemory(memory_key='chat_history', return_messages=True, output_key='answer'),
         get_chat_history=lambda h: h,
         return_source_documents=True,
@@ -148,3 +152,4 @@ def get_conversation_chain(vetorestore, openai_api_key):
 
 if __name__ == '__main__':
     main()
+

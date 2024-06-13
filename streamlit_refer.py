@@ -15,6 +15,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.vectorstores import FAISS
 
+# from streamlit_chat import message
 from langchain.callbacks import get_openai_callback
 from langchain.memory import StreamlitChatMessageHistory
 
@@ -23,6 +24,62 @@ def main():
         page_title="Library and Information Science OpenChat",
         page_icon=":books:"
     )
+
+    st.markdown("""
+        <style>
+            .chat-container {
+                display: flex;
+                flex-direction: column;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            .chat-message {
+                display: flex;
+                align-items: flex-start;
+                margin: 10px 0;
+                padding: 10px;
+                border-radius: 10px;
+                max-width: 80%;
+            }
+            .chat-message.user {
+                background-color: #e6ffe6;
+                align-self: flex-end;
+            }
+            .chat-message.assistant {
+                background-color: #f0f2f6;
+                align-self: flex-start;
+            }
+            .chat-message .avatar {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+            .chat-input-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+                background-color: #f0f2f6;
+                border-top: 1px solid #ccc;
+            }
+            .chat-input {
+                width: 100%;
+                padding: 10px;
+                border-radius: 20px;
+                border: 1px solid #ccc;
+                margin-right: 10px;
+                outline: none;
+            }
+            .chat-button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 20px;
+                background-color: #4CAF50;
+                color: white;
+                cursor: pointer;
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
     st.title("📚 LISBOT에게 물어보세요 ❕")
     st.caption("📢 *Welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.*")
@@ -39,7 +96,7 @@ def main():
         st.session_state.processComplete = None
 
     with st.sidebar:
-        uploaded_files = st.file_uploader("여기에 파일을 업로드하세요.", type=['pdf','docx'], accept_multiple_files=True)
+        uploaded_files = st.file_uploader("여기에 파일을 업로드하세요.", type=['pdf', 'docx'], accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
 
@@ -63,35 +120,58 @@ def main():
                                          "content": "안녕하세요 저는 ai 사서 LISBOT입니다. 궁금한 것이 있나요?"}]
 
     # Display chat messages
+    st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
     for message in st.session_state.messages:
         if message["role"] == "assistant":
-            st.markdown(f"<div style='background-color: #f0f2f6; padding: 10px; border-radius: 10px;'>{message['content']}</div>", unsafe_allow_html=True)
+            st.markdown(f"""
+                <div class='chat-message assistant'>
+                    <span class='avatar'>🤖</span>
+                    <span>{message['content']}</span>
+                </div>
+                """, unsafe_allow_html=True)
         else:
-            st.markdown(f"<div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>{message['content']}</div>", unsafe_allow_html=True)
+            st.markdown(f"""
+                <div class='chat-message user'>
+                    <span class='avatar'>🧑</span>
+                    <span>{message['content']}</span>
+                </div>
+                """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Chat input
-    query = st.text_input("여기에 질문을 입력하세요.")
-    if query:
-        st.session_state.messages.append({"role": "user", "content": query})
-        st.markdown(f"<div style='background-color: #e6ffe6; padding: 10px; border-radius: 10px;'>{query}</div>", unsafe_allow_html=True)
+    query = st.text_input("여기에 질문을 입력하세요.", key="chat_input")
+    if st.button("Send", key="send_button"):
+        if query:
+            st.session_state.messages.append({"role": "user", "content": query})
+            st.markdown(f"""
+                <div class='chat-message user'>
+                    <span class='avatar'>🧑</span>
+                    <span>{query}</span>
+                </div>
+                """, unsafe_allow_html=True)
 
-        chain = st.session_state.conversation
+            chain = st.session_state.conversation
 
-        with st.spinner("Thinking..."):
-            result = chain({"question": query})
-            with get_openai_callback() as cb:
-                st.session_state.chat_history = result['chat_history']
-            response = result['answer']
-            source_documents = result['source_documents']
+            with st.spinner("Thinking..."):
+                result = chain({"question": query})
+                with get_openai_callback() as cb:
+                    st.session_state.chat_history = result['chat_history']
+                response = result['answer']
+                source_documents = result['source_documents']
 
-            st.markdown(f"<div style='background-color: #f0f2f6; padding: 10px; border-radius: 10px;'>{response}</div>", unsafe_allow_html=True)
-            with st.expander("참고 문서 확인"):
-                st.markdown(source_documents[0].metadata['source'], help=source_documents[0].page_content)
-                st.markdown(source_documents[1].metadata['source'], help=source_documents[1].page_content)
-                st.markdown(source_documents[2].metadata['source'], help=source_documents[2].page_content)
+                st.markdown(f"""
+                    <div class='chat-message assistant'>
+                        <span class='avatar'>🤖</span>
+                        <span>{response}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+                with st.expander("참고 문서 확인"):
+                    st.markdown(source_documents[0].metadata['source'], help=source_documents[0].page_content)
+                    st.markdown(source_documents[1].metadata['source'], help=source_documents[1].page_content)
+                    st.markdown(source_documents[2].metadata['source'], help=source_documents[2].page_content)
 
-        # Add assistant message to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            # Add assistant message to chat history
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
 def tiktoken_len(text):
     tokenizer = tiktoken.get_encoding("cl100k_base")
@@ -152,4 +232,5 @@ def get_conversation_chain(vetorestore, openai_api_key):
 
 if __name__ == '__main__':
     main()
+
 

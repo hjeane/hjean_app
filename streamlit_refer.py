@@ -15,7 +15,6 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.vectorstores import FAISS
 
-# from streamlit_chat import message
 from langchain.callbacks import get_openai_callback
 from langchain.memory import StreamlitChatMessageHistory
 
@@ -25,6 +24,45 @@ def main():
         page_icon=":books:"
     )
 
+    st.title("📚 LISBOT에게 물어보세요 ❕")
+    st.caption("📢 *Welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.*")
+    st.caption("✔️ **반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요** 🖋️")
+    st.caption("✔️ **LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다. 자료를 업로드하고 궁금한 점을 물어보세요** 💬")
+
+    if "conversation" not in st.session_state:
+        st.session_state.conversation = None
+
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = None
+
+    if "processComplete" not in st.session_state:
+        st.session_state.processComplete = None
+
+    with st.sidebar:
+        uploaded_files = st.file_uploader("여기에 파일을 업로드하세요.", type=['pdf', 'docx'], accept_multiple_files=True)
+        openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+        process = st.button("Process")
+
+    if process:
+        if not uploaded_files:
+            st.info("먼저 파일을 업로드하세요.")
+            st.stop()
+        if not openai_api_key:
+            st.info("OpenAI API key를 다시 입력하세요.")
+            st.stop()
+
+        files_text = get_text(uploaded_files)
+        text_chunks = get_text_chunks(files_text)
+        vetorestore = get_vectorstore(text_chunks)
+
+        st.session_state.conversation = get_conversation_chain(vetorestore, openai_api_key)
+        st.session_state.processComplete = True
+
+    if 'messages' not in st.session_state:
+        st.session_state['messages'] = [{"role": "assistant",
+                                         "content": "안녕하세요 저는 ai 사서 LISBOT입니다. 궁금한 것이 있나요?"}]
+
+    # CSS for chat messages
     st.markdown("""
         <style>
             .chat-container {
@@ -81,45 +119,6 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    st.title("📚 LISBOT에게 물어보세요 ❕")
-    st.caption("📢 *Welcome to the Library and Information Science Q&A chat. This app is developed for the Introduction to Data Science course project for Spring 2024. Feel free to ask any questions to LISBOT. Whether you're looking for research help, resource recommendations, or answers to specific questions, LISBOT is here to assist you.*")
-    st.caption("✔️ **반드시 파일을 먼저 첨부한 뒤 OPENAPI KEY를 입력해주세요** 🖋️")
-    st.caption("✔️ **LISBOT은 첨부한 자료를 기반으로 한 답변을 제공합니다. 자료를 업로드하고 궁금한 점을 물어보세요** 💬")
-
-    if "conversation" not in st.session_state:
-        st.session_state.conversation = None
-
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = None
-
-    if "processComplete" not in st.session_state:
-        st.session_state.processComplete = None
-
-    with st.sidebar:
-        uploaded_files = st.file_uploader("여기에 파일을 업로드하세요.", type=['pdf', 'docx'], accept_multiple_files=True)
-        openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-        process = st.button("Process")
-
-    if process:
-        if not uploaded_files:
-            st.info("먼저 파일을 업로드하세요.")
-            st.stop()
-        if not openai_api_key:
-            st.info("OpenAI API key를 다시 입력하세요.")
-            st.stop()
-
-        files_text = get_text(uploaded_files)
-        text_chunks = get_text_chunks(files_text)
-        vetorestore = get_vectorstore(text_chunks)
-
-        st.session_state.conversation = get_conversation_chain(vetorestore, openai_api_key)
-        st.session_state.processComplete = True
-
-    if 'messages' not in st.session_state:
-        st.session_state['messages'] = [{"role": "assistant",
-                                         "content": "안녕하세요 저는 ai 사서 LISBOT입니다. 궁금한 것이 있나요?"}]
-
-    # Display chat messages
     st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
     for message in st.session_state.messages:
         if message["role"] == "assistant":
@@ -229,6 +228,9 @@ def get_conversation_chain(vetorestore, openai_api_key):
         verbose=True
     )
     return conversation_chain
+
+if __name__ == '__main__':
+    main()
 
 if __name__ == '__main__':
     main()

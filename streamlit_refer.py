@@ -160,11 +160,17 @@ def get_conversation_chain(vectorstore, openai_api_key):
 
 def get_data4library_response(api_key, query):
     url = f"http://data4library.kr/api/srchApiData?authKey={api_key}&query={query}&output=json"
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, timeout=10)  # 타임아웃 설정 (10초)
+        response.raise_for_status()  # HTTP 오류가 발생했는지 확인
         return response.json()
-    else:
-        return None
+    except requests.exceptions.Timeout:
+        logger.error("The request timed out")
+        return {"error": "The request timed out"}
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return {"error": str(e)}
 
 if __name__ == '__main__':
     main()
+

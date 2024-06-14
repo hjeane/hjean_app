@@ -11,6 +11,8 @@ from langchain.vectorstores import FAISS
 from langchain.callbacks import get_openai_callback
 from langchain.memory import StreamlitChatMessageHistory
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 def main():
     st.set_page_config(
@@ -160,8 +162,16 @@ def get_conversation_chain(vectorstore, openai_api_key):
 
 def get_data4library_response(api_key, query):
     url = f"http://data4library.kr/api/srchApiData?authKey={api_key}&query={query}&output=json"
+    
+    # Retry 설정 추가
+    retries = Retry(total=5, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504])
+    adapter = HTTPAdapter(max_retries=retries)
+    http = requests.Session()
+    http.mount("http://", adapter)
+    http.mount("https://", adapter)
+
     try:
-        response = requests.get(url, timeout=10)  # 타임아웃 설정 (10초)
+        response = http.get(url, timeout=30)  # 타임아웃 설정 (30초)
         response.raise_for_status()  # HTTP 오류가 발생했는지 확인
         return response.json()
     except requests.exceptions.Timeout:
@@ -173,4 +183,3 @@ def get_data4library_response(api_key, query):
 
 if __name__ == '__main__':
     main()
-

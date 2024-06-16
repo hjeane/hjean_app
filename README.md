@@ -1,4 +1,4 @@
-# hjean_app
+# Library and Information Science Chatbo 만들기 __hjean_app
 가상환경 생성하기
 VSC 상단의 'Terminal'을 클릭하고, 'New Terminal'을 누르면 터미널을 열 수 있습니다. 이 때, 터미널이 열리는 경로를 확인하세요. 터미널의 경로는 streamlit-tutorial 폴더로 지정이 되어 있어야 합니다. 해당 터미널의 입력창에서 다음과 같이 코드를 순서대로 입력합니다.
 
